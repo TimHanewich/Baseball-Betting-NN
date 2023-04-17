@@ -36,15 +36,8 @@ namespace ESPN
             loc1 = content.IndexOf("=", loc1 + 1);
             int loc2 = content.IndexOf(";</script>", loc1 + 1);
             string json = content.Substring(loc1 + 1, loc2 - loc1 - 1);
+            JObject root = JObject.Parse(json);
 
-
-            //Parse
-            int loc1 = content.IndexOf("Card__Header Card__Header--presby");
-            loc1 = content.IndexOf("<div>", loc1 + 1);
-            int loc2 = content.IndexOf("fitt-adbox-native-betting", loc1 + 1);
-            string games_content = content.Substring(loc1 + 1, loc2 - loc1 - 1);
-            string[] games_html = games_content.Split(new string[]{"Scoreboard bg-clr-white flex flex-auto justify-between"}, StringSplitOptions.RemoveEmptyEntries);
-            
             //Parse each
             List<Game> games = new List<Game>();
             for (int t = 1; t < games_html.Length; t++)
