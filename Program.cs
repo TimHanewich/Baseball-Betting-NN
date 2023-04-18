@@ -29,6 +29,8 @@ namespace ESPN
                 BettingLine[] lines = await BettingLine.RetrieveAsync();
                 Console.WriteLine("Retrieved!");
 
+                //Collect new states
+                int new_states_added = 0;
                 foreach (Game g in s.Games)
                 {
                     StatePredictionPair spp = new StatePredictionPair();
@@ -40,10 +42,21 @@ namespace ESPN
                         if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
                         {
                             spp.Prediction = line.ToState();
-                            db.AddIfNotStored(spp);
+                            bool added = db.AddIfNotStored(spp);
+                            if (added)
+                            {
+                                new_states_added = new_states_added + 1;
+                            }
                         }
                     }
                 }
+
+                //Print progress
+                if (new_states_added > 0)
+                {
+                    Console.WriteLine(new_states_added.ToString("#,##0") + " new frames added!");
+                }
+                
 
                 //Wait
                 TimeSpan ToWait = new TimeSpan(0, 5, 0); //Default, if no games are being played right now, is 5 minutes
