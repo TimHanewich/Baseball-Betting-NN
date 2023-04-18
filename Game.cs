@@ -6,7 +6,10 @@ namespace ESPN
 {
     public class Game
     {
+        //Not included in state
         public int Id {get; set;}
+        public float? WinProbability {get; set;} //1.0 would be a 100% probability for the away team. -1.0 is a 100% probability for the home team. If this is null, it means it was not available in  the initial read from the Scoreboard (one page) and a call to the game page is required.
+        
         public float AwayTeamWinningRecord {get; set;}
         public float HomeTeamWinningRecord {get; set;}
         public int AwayTeamRuns {get; set;}
