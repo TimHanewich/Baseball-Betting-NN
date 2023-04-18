@@ -9,32 +9,60 @@ namespace ESPN
     {
         public static void Main(string[] args)
         {
+            RunAsync().Wait();
+        }
 
+        public static async Task RunAsync()
+        {
             VirtualDB db = new VirtualDB(@"C:\Users\timh\Downloads\tah\nn\db.jsonl");
-            
-            Scoreboard s = Scoreboard.RetrieveAsync().Result;
-            foreach (Game g in s.Games)
+
+            while (true)
             {
-                StateProbabilityPair? spp = null;
-                try
+                Console.Write("Retrieving scoreboard... ");
+                Scoreboard s = await Scoreboard.RetrieveAsync();
+                Console.WriteLine("Retrieved!");
+
+                foreach (Game g in s.Games)
                 {
-                    spp = g.ToStateProbabilityPairAsync().Result;
+                    StateProbabilityPair? spp = null;
+                    try
+                    {
+                        Console.Write("Assembling pair for " + g.Id.ToString() + "... ");
+                        spp = await g.ToStateProbabilityPairAsync();
+                        Console.WriteLine("Success!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Failure! Msg: " + ex.Message);
+                    }
+                    
+                    if (spp != null)
+                    {
+                        Console.Write("Writing " + g.Id.ToString() + " (if needed)... ");
+                        db.AddIfNotStored(spp);
+                        Console.WriteLine("Done!");
+                    }
                 }
-                catch
-                {
-                    Console.WriteLine(g.Id.ToString() + " did not work.");
-                }
+
+                //Wait
+                TimeSpan ToWait = new TimeSpan(0, 5, 0); //Default, if no games are being played right now, is 5 minutes
                 
-                if (spp != null)
+                //But, if a single game is being played right now, wait only 5 seconds
+                foreach (Game g in s.Games)
                 {
-                    Console.Write("Writing " + g.Id.ToString() + "'... ");
-                    db.AddIfNotStored(spp);
-                    Console.WriteLine("Done!");
+                    if (g.Inning != 0)
+                    {
+                        ToWait = new TimeSpan(0, 0, 5);
+                    }
                 }
-                
+
+                //Wait
+                Console.Write("Waiting " + ToWait.TotalSeconds.ToString("#,##0") + " seconds before cycling... ");
+                await Task.Delay(ToWait);
+                Console.WriteLine("Moving on!");
             }
             
-
+            
         }
 
         
