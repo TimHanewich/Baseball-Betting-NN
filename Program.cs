@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
+using DraftKings;
+using Newtonsoft.Json.Linq;
 
 namespace ESPN
 {
@@ -9,7 +11,9 @@ namespace ESPN
     {
         public static void Main(string[] args)
         {
-            RunAsync().Wait();
+
+            BettingLine[] lines = BettingLine.RetrieveAsync().Result;
+            Console.WriteLine(JsonConvert.SerializeObject(lines, Formatting.Indented));
         }
 
         public static async Task RunAsync()
