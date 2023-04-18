@@ -307,11 +307,11 @@ namespace ESPN
                                     odds = odds.Replace(home.ToString().ToLower(), "");
                                     odds = odds.Replace(away.ToString().ToLower(), "");
                                     odds = odds.Trim();
-                                    float oddsf = Convert.ToSingle(odds);
 
                                     //Calculate
-                                    float probability = (-1 * oddsf) / ((-1 * oddsf) + 100);
-                                    g.WinProbability = probability * multiplier;
+                                    float win_probability = MoneyLineToImpliedProbability(Convert.ToInt32(odds));
+                                    win_probability = win_probability * multiplier;
+                                    g.WinProbability = win_probability;
                                 }
                             }
 
@@ -357,6 +357,20 @@ namespace ESPN
             float wins = Convert.ToSingle(parts[0]);
             float losses = Convert.ToSingle(parts[1]);
             return wins / (wins + losses);
+        }
+
+        private static float MoneyLineToImpliedProbability(int money_line)
+        {
+            if (money_line < 0) //negative
+            {
+                float ml = Convert.ToSingle(money_line);
+                return (-1f * ml) / ((-1 * ml) + 100f);
+            }
+            else
+            {
+                float ml = Convert.ToSingle(money_line);
+                return 100f / (ml + 100f);
+            }
         }
     }
 }
