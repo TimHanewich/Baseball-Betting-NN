@@ -204,9 +204,77 @@ namespace ESPN
 
                             //away team runs
                             JToken? atr = jo.SelectToken("competitors[1].runs");
-                            if (htr != null)
+                            if (atr != null)
                             {
                                 g.AwayTeamRuns = Convert.ToInt32(atr.ToString());
+                            }
+
+                            //Home team hits + errors
+                            JToken? home_statistics = jo.SelectToken("competitors[0].statistics");
+                            if (home_statistics != null)
+                            {
+                                if (home_statistics.ToString().Contains("null") == false)
+                                {
+                                    JArray hs = (JArray)home_statistics;
+                                    foreach (JObject stat in hs)
+                                    {
+                                        JProperty? prop_name = stat.Property("name");
+                                        if (prop_name != null)
+                                        {
+                                            string stat_name = prop_name.Value.ToString();
+                                            if (stat_name == "hits")
+                                            {
+                                                JProperty? prop_displayValue = stat.Property("displayValue");
+                                                if (prop_displayValue != null)
+                                                {
+                                                    g.HomeTeamHits = Convert.ToInt32(prop_displayValue.Value.ToString());
+                                                }
+                                            }
+                                            else if (stat_name == "errors")
+                                            {
+                                                JProperty? prop_displayValue = stat.Property("displayValue");
+                                                if (prop_displayValue != null)
+                                                {
+                                                    g.HomeTeamErrors = Convert.ToInt32(prop_displayValue.Value.ToString());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        
+                            //away team hits + errors
+                            JToken? away_statistics = jo.SelectToken("competitors[1].statistics");
+                            if (away_statistics != null)
+                            {
+                                if (away_statistics.ToString().Contains("null") == false)
+                                {
+                                    JArray hs = (JArray)away_statistics;
+                                    foreach (JObject stat in hs)
+                                    {
+                                        JProperty? prop_name = stat.Property("name");
+                                        if (prop_name != null)
+                                        {
+                                            string stat_name = prop_name.Value.ToString();
+                                            if (stat_name == "hits")
+                                            {
+                                                JProperty? prop_displayValue = stat.Property("displayValue");
+                                                if (prop_displayValue != null)
+                                                {
+                                                    g.AwayTeamHits = Convert.ToInt32(prop_displayValue.Value.ToString());
+                                                }
+                                            }
+                                            else if (stat_name == "errors")
+                                            {
+                                                JProperty? prop_displayValue = stat.Property("displayValue");
+                                                if (prop_displayValue != null)
+                                                {
+                                                    g.AwayTeamErrors = Convert.ToInt32(prop_displayValue.Value.ToString());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         
                         }
@@ -224,10 +292,7 @@ namespace ESPN
                     //Balls
                     g.Balls = bso_parts[1].Split(new string[]{"active"}, StringSplitOptions.RemoveEmptyEntries).Length - 1;
                     g.Strikes = bso_parts[2].Split(new string[]{"active"}, StringSplitOptions.RemoveEmptyEntries).Length - 1;
-                    g.Outs = bso_parts[3].Split(new string[]{"active"}, StringSplitOptions.RemoveEmptyEntries).Length - 1;
-
-                    Console.WriteLine(g.Balls.ToString() + " " + g.Strikes.ToString() + " " + g.Outs.ToString());
-                    
+                    g.Outs = bso_parts[3].Split(new string[]{"active"}, StringSplitOptions.RemoveEmptyEntries).Length - 1;                    
                 }
 
                 //Man on first
