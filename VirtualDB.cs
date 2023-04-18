@@ -49,7 +49,7 @@ namespace ESPN
     
         public void Add(StateProbabilityPair spp)
         {
-            StreamWriter sw = new StreamWriter(path);
+            StreamWriter sw = System.IO.File.AppendText(path);
             sw.WriteLine(JsonConvert.SerializeObject(spp, Formatting.None));
             sw.Close();
         }
