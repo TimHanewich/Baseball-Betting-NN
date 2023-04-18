@@ -11,9 +11,11 @@ namespace ESPN
     {
         public static void Main(string[] args)
         {
+            // Scoreboard s = Scoreboard.RetrieveAsync().Result;
+            // Console.WriteLine(JsonConvert.SerializeObject(s.Games, Formatting.Indented));
+            // Console.ReadLine();
 
-            BettingLine[] lines = BettingLine.RetrieveAsync().Result;
-            Console.WriteLine(JsonConvert.SerializeObject(lines, Formatting.Indented));
+            RunAsync().Wait();
         }
 
         public static async Task RunAsync()
@@ -26,23 +28,24 @@ namespace ESPN
                 Scoreboard s = await Scoreboard.RetrieveAsync();
                 Console.WriteLine("Retrieved!");
 
+                //Retrieve DraftKings
+                Console.Write("Retrieving DraftKings lines... ");
+                BettingLine[] lines = await BettingLine.RetrieveAsync();
+                Console.WriteLine("Retrieved!");
+
                 foreach (Game g in s.Games)
                 {
-                    StateProbabilityPair? spp = null;
-                    try
+                    StatePredictionPair spp = new StatePredictionPair();
+                    spp.State = g.ToState();
+
+                    //Find the prediction in the draftkinds
+                    foreach (BettingLine line in lines)
                     {
-                        Console.Write("Assembling pair for " + g.Id.ToString() + "... ");
-                        spp = await g.ToStateProbabilityPairAsync();
-                        Console.WriteLine("Success!");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Failure! Msg: " + ex.Message);
-                    }
-                    
-                    if (spp != null)
-                    {
-                        db.AddIfNotStored(spp);
+                        if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
+                        {
+                            spp.Prediction = line.ToState();
+                            db.AddIfNotStored(spp);
+                        }
                     }
                 }
 

@@ -102,6 +102,22 @@ namespace ESPN
                         if (id == g.Id)
                         {
 
+                            //home team abbreviation
+                            JToken? HomeTeamAbbreviation = jo.SelectToken("competitors[0].abbrev");
+                            if (HomeTeamAbbreviation != null)
+                            {
+                                g.HomeTeamAbbreviation = HomeTeamAbbreviation.ToString();
+                            }
+                            
+
+                            //away team abbreviation
+                            JToken? AwayTeamAbbreviation = jo.SelectToken("competitors[1].abbrev");
+                            if (AwayTeamAbbreviation != null)
+                            {
+                                g.AwayTeamAbbreviation = AwayTeamAbbreviation.ToString();
+                            }
+                            
+
                             //Get the inning & batting team
                             JToken? sdetail = jo.SelectToken("status.detail");
                             if (sdetail != null)

@@ -13,7 +13,10 @@ namespace ESPN
         //Not included in state
         public int Id {get; set;}
         public float? WinProbability {get; set;} //1.0 would be a 100% probability for the away team. -1.0 is a 100% probability for the home team. If this is null, it means it was not available in  the initial read from the Scoreboard (one page) and a call to the game page is required.
-        
+        public string AwayTeamAbbreviation {get; set;}
+        public string HomeTeamAbbreviation {get; set;}
+
+
         public float AwayTeamWinningRecord {get; set;}
         public float HomeTeamWinningRecord {get; set;}
         public int AwayTeamRuns {get; set;}
@@ -30,6 +33,12 @@ namespace ESPN
         public bool ManOnFirst {get; set;}
         public bool ManOnSecond {get; set;}
         public bool ManOnThird {get; set;}
+
+        public Game()
+        {
+            AwayTeamAbbreviation = string.Empty;
+            HomeTeamAbbreviation = string.Empty;
+        }
 
         public float[] ToState()
         {
@@ -141,31 +150,6 @@ namespace ESPN
             }
 
 
-        }
-    
-        public async Task<StateProbabilityPair> ToStateProbabilityPairAsync()
-        {
-            StateProbabilityPair ToReturn = new StateProbabilityPair();
-            ToReturn.State = ToState();
-            
-            if (WinProbability.HasValue)
-            {
-                ToReturn.Probability = WinProbability.Value;
-            }
-            else
-            {
-                await GetWinProbabilityAsync();
-                if (WinProbability.HasValue)
-                {
-                    ToReturn.Probability = WinProbability.Value;
-                }
-                else
-                {
-                    throw new Exception("Unable to assemble StateProbabilityPair. Unable to find win probability for game '" + Id.ToString() + "'");
-                }
-            }
-
-            return ToReturn;
         }
     }
 }

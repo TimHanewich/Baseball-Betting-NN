@@ -8,7 +8,7 @@ namespace ESPN
 {
     public class VirtualDB
     {
-        private string path; //Path to the .jsonl file, where each line is a StateProbabilityPair in JSON
+        private string path; //Path to the .jsonl file, where each line is a StatePredictionPair in JSON
 
         public VirtualDB(string jsonl_path)
         {
@@ -30,7 +30,7 @@ namespace ESPN
                 }
                 else
                 {
-                    StateProbabilityPair? spp = JsonConvert.DeserializeObject<StateProbabilityPair>(line);
+                    StatePredictionPair? spp = JsonConvert.DeserializeObject<StatePredictionPair>(line);
                     if (spp != null)
                     {
                         if (Game.EquivalentStates(spp.State, state))
@@ -47,14 +47,14 @@ namespace ESPN
             return false;
         }
     
-        public void Add(StateProbabilityPair spp)
+        public void Add(StatePredictionPair spp)
         {
             StreamWriter sw = System.IO.File.AppendText(path);
             sw.WriteLine(JsonConvert.SerializeObject(spp, Formatting.None));
             sw.Close();
         }
 
-        public void AddIfNotStored(StateProbabilityPair spp)
+        public void AddIfNotStored(StatePredictionPair spp)
         {
             bool exists = Stored(spp.State);
             if (exists == false)
@@ -63,9 +63,9 @@ namespace ESPN
             }
         }
 
-        public StateProbabilityPair[] RetrieveAll()
+        public StatePredictionPair[] RetrieveAll()
         {
-            List<StateProbabilityPair> ToReturn = new List<StateProbabilityPair>();
+            List<StatePredictionPair> ToReturn = new List<StatePredictionPair>();
             StreamReader sr = new StreamReader(path);
             
             bool stop = false;
@@ -78,7 +78,7 @@ namespace ESPN
                 }
                 else
                 {
-                    StateProbabilityPair? spp = JsonConvert.DeserializeObject<StateProbabilityPair>(line);
+                    StatePredictionPair? spp = JsonConvert.DeserializeObject<StatePredictionPair>(line);
                     if (spp != null)
                     {
                         ToReturn.Add(spp);
