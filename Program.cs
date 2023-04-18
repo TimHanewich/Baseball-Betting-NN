@@ -38,9 +38,7 @@ namespace ESPN
                     
                     if (spp != null)
                     {
-                        Console.Write("Writing " + g.Id.ToString() + " (if needed)... ");
                         db.AddIfNotStored(spp);
-                        Console.WriteLine("Done!");
                     }
                 }
 
@@ -52,6 +50,7 @@ namespace ESPN
                 {
                     if (g.Inning != 0)
                     {
+                        Console.WriteLine("Game '" + g.Id.ToString() + "' is being played right now! Will only wait 5 seconds.");
                         ToWait = new TimeSpan(0, 0, 5);
                     }
                 }
