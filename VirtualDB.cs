@@ -54,12 +54,19 @@ namespace ESPN
             sw.Close();
         }
 
-        public void AddIfNotStored(StatePredictionPair spp)
+
+        //Returns true if added, false if not
+        public bool AddIfNotStored(StatePredictionPair spp)
         {
             bool exists = Stored(spp.State);
             if (exists == false)
             {
                 Add(spp);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
