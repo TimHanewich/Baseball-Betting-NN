@@ -10,11 +10,7 @@ namespace ESPN
     public class Program
     {
         public static void Main(string[] args)
-        {
-            // Scoreboard s = Scoreboard.RetrieveAsync().Result;
-            // Console.WriteLine(JsonConvert.SerializeObject(s.Games, Formatting.Indented));
-            // Console.ReadLine();
-
+        {           
             RunAsync().Wait();
         }
 
@@ -57,7 +53,6 @@ namespace ESPN
                 {
                     if (g.Inning != 0)
                     {
-                        Console.WriteLine("Game '" + g.Id.ToString() + "' is being played right now! Will only wait 5 seconds.");
                         ToWait = new TimeSpan(0, 0, 5);
                     }
                 }
