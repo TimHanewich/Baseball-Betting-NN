@@ -308,10 +308,16 @@ namespace ESPN
                                     odds = odds.Replace(away.ToString().ToLower(), "");
                                     odds = odds.Trim();
 
-                                    //Calculate
-                                    float win_probability = MoneyLineToImpliedProbability(Convert.ToInt32(odds));
-                                    win_probability = win_probability * multiplier;
-                                    g.WinProbability = win_probability;
+                                    if (odds == "even") //If the money line is even (i.e. both are -110), it will say "even"
+                                    {
+                                        g.WinProbability = 0.0f;
+                                    }
+                                    else //i.e. "-125"
+                                    {
+                                        float win_probability = Toolkit.MoneyLineToImpliedProbability(Convert.ToInt32(odds));
+                                        win_probability = win_probability * multiplier;
+                                        g.WinProbability = win_probability;
+                                    }
                                 }
                             }
 
@@ -357,20 +363,6 @@ namespace ESPN
             float wins = Convert.ToSingle(parts[0]);
             float losses = Convert.ToSingle(parts[1]);
             return wins / (wins + losses);
-        }
-
-        private static float MoneyLineToImpliedProbability(int money_line)
-        {
-            if (money_line < 0) //negative
-            {
-                float ml = Convert.ToSingle(money_line);
-                return (-1f * ml) / ((-1 * ml) + 100f);
-            }
-            else
-            {
-                float ml = Convert.ToSingle(money_line);
-                return 100f / (ml + 100f);
-            }
         }
     }
 }
