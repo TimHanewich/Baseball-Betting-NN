@@ -142,5 +142,30 @@ namespace ESPN
 
 
         }
+    
+        public async Task<StateProbabilityPair> ToStateProbabilityPairAsync()
+        {
+            StateProbabilityPair ToReturn = new StateProbabilityPair();
+            ToReturn.State = ToState();
+            
+            if (WinProbability.HasValue)
+            {
+                ToReturn.Probability = WinProbability.Value;
+            }
+            else
+            {
+                await GetWinProbabilityAsync();
+                if (WinProbability.HasValue)
+                {
+                    ToReturn.Probability = WinProbability.Value;
+                }
+                else
+                {
+                    throw new Exception("Unable to assemble StateProbabilityPair. Unable to find win probability for game '" + Id.ToString() + "'");
+                }
+            }
+
+            return ToReturn;
+        }
     }
 }
