@@ -19,10 +19,20 @@ namespace ESPN
 
         public static async Task<Scoreboard> RetrieveAsync()
         {
+            Scoreboard ToReturn = await RetrieveAsync(DateTime.Now);
+            return ToReturn;
+        }
+
+        public static async Task<Scoreboard> RetrieveAsync(DateTime for_date)
+        {
+
+            //Assemble the scoreboard URL
+            string scoreboard_url = "https://www.espn.com/mlb/scoreboard/_/date/" + for_date.Year.ToString("0000") + for_date.Month.ToString("00") + for_date.Day.ToString("00");
+
             HttpClient hc = new HttpClient();
             HttpRequestMessage req = new HttpRequestMessage();
             req.Method = HttpMethod.Get;
-            req.RequestUri = new Uri("https://www.espn.com/mlb/scoreboard");
+            req.RequestUri = new Uri(scoreboard_url);
             HttpResponseMessage resp = await hc.SendAsync(req);
             string content = await resp.Content.ReadAsStringAsync();
 
@@ -302,7 +312,6 @@ namespace ESPN
                                     //Calculate
                                     float probability = (-1 * oddsf) / ((-1 * oddsf) + 100);
                                     g.WinProbability = probability * multiplier;
-                                    Console.WriteLine(g.WinProbability);
                                 }
                             }
 
