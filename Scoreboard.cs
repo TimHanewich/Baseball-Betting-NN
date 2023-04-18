@@ -277,6 +277,36 @@ namespace ESPN
                                 }
                             }
                         
+                            //Odds
+                            JToken? odds_details = jo.SelectToken("odds.details");
+                            if (odds_details != null)
+                            {
+                                JToken? home = jo.SelectToken("competitors[0].abbrev");
+                                JToken? away = jo.SelectToken("competitors[1].abbrev");
+                                if (home != null && away != null)
+                                {
+                                    //Multiplier - away or home?
+                                    float multiplier = 1f;
+                                    if (odds_details.ToString().ToLower().Contains(home.ToString().ToLower()))
+                                    {
+                                        multiplier = -1f;
+                                    }
+                                    
+                                    string odds = odds_details.ToString();
+                                    odds = odds.ToLower();
+                                    odds = odds.Replace(home.ToString().ToLower(), "");
+                                    odds = odds.Replace(away.ToString().ToLower(), "");
+                                    odds = odds.Trim();
+                                    float oddsf = Convert.ToSingle(odds);
+
+                                    //Calculate
+                                    float probability = (-1 * oddsf) / ((-1 * oddsf) + 100);
+                                    g.WinProbability = probability * multiplier;
+                                    Console.WriteLine(g.WinProbability);
+                                }
+                            }
+
+
                         }
                     }
                 }
