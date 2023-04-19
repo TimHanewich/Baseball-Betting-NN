@@ -8,6 +8,7 @@ man_on_third:bool = False
 ball_count = 0
 strike_count = 0
 out_count = 0
+bottom_top_inning = False # False = top of inning (away team batting), True = bottom of inning (home team batting)
 
 
 
@@ -61,9 +62,9 @@ current_inning.place(x=375, y=191)
 
 # top or bottom (batting team)
 inning_top = canvas.create_rectangle(350, 225, 420, 250, fill="light gray")
-canvas.create_text(350 + 35, 225 + 12.5, text="Top")
+inning_top_text = canvas.create_text(350 + 35, 225 + 12.5, text="Top")
 inning_bottom = canvas.create_rectangle(420, 225, 490, 250, fill="light gray")
-canvas.create_text(420 + 35, 225 + 12.5, text="Bottom")
+inning_bottom_text = canvas.create_text(420 + 35, 225 + 12.5, text="Bottom")
 
 
 # Away + Home Team Runs, Hits, and Errors, and record
@@ -121,6 +122,7 @@ def on_click(event):
     global ball_count
     global strike_count
     global out_count
+    global bottom_top_inning
 
     if widget_clicked_id == first_base:
         if man_on_first:
@@ -173,6 +175,12 @@ def on_click(event):
     elif widget_clicked_id == outs_2 or widget_clicked_id == outs_2_text:
         out_count = 2
         update_ui_outs()
+    elif widget_clicked_id == inning_top or widget_clicked_id == inning_top_text:
+        bottom_top_inning = False
+        update_ui_bottom_top_inning()
+    elif widget_clicked_id == inning_bottom or widget_clicked_id == inning_bottom_text:
+        bottom_top_inning = True
+        update_ui_bottom_top_inning()
     
     
 
@@ -245,6 +253,19 @@ def update_ui_outs():
         canvas.itemconfig(outs_1, fill="orange")
         canvas.itemconfig(outs_2, fill="yellow")
 
+def update_ui_bottom_top_inning():
+    global inning_top
+    global inning_bottom
+    global canvas
+    global bottom_top_inning
+
+    if bottom_top_inning == False:
+        canvas.itemconfig(inning_top, fill = "yellow")
+        canvas.itemconfig(inning_bottom, fill = "light gray")
+    elif bottom_top_inning == True:
+        canvas.itemconfig(inning_top, fill = "light gray")
+        canvas.itemconfig(inning_bottom, fill = "yellow")
+
 
 canvas.tag_bind(first_base, "<Button-1>", on_click)
 canvas.tag_bind(second_base, "<Button-1>", on_click)
@@ -269,5 +290,9 @@ canvas.tag_bind(outs_2, "<Button-1>", on_click)
 canvas.tag_bind(outs_0_text, "<Button-1>", on_click)
 canvas.tag_bind(outs_1_text, "<Button-1>", on_click)
 canvas.tag_bind(outs_2_text, "<Button-1>", on_click)
+canvas.tag_bind(inning_bottom, "<Button-1>", on_click)
+canvas.tag_bind(inning_top, "<Button-1>", on_click)
+canvas.tag_bind(inning_bottom_text, "<Button-1>", on_click)
+canvas.tag_bind(inning_top_text, "<Button-1>", on_click)
 
 root.mainloop()
