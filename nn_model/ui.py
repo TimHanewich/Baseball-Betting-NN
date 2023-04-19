@@ -1,3 +1,10 @@
+##### SETTINGS #####
+nn_model_path = r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model2"
+####################
+
+
+
+
 from tkinter import *
 import tensorflow as tf
 import numpy
@@ -6,7 +13,7 @@ import numpy
 
 # load the neural network into memory
 print("Loading model... ")
-model:tf.keras.Model = tf.keras.models.load_model(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model2")
+model:tf.keras.Model = tf.keras.models.load_model(nn_model_path)
 print("Model loaded!")
 
 
