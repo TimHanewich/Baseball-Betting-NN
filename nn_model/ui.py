@@ -90,6 +90,21 @@ home_errors.place(x=350-12, y=390-8)
 home_record = Entry(root, width=5, font=("Arial", 12))
 home_record.place(x=425-22, y=390-8)
 
+# calculate button
+calculate_button = Button(root, text="Calculate", width=35, bg="light blue")
+calculate_button.place(x=160, y=425)
+
+# calculations
+canvas.create_text(100, 475, text="Run Line")
+canvas.create_text(225, 475, text="Total Line")
+canvas.create_text(350, 475, text="Away Team ML")
+canvas.create_text(475, 475, text="Home Team ML")
+calc_run_line = canvas.create_text(100, 475+25, font=("Arial", 14), text="-")
+calc_total_line = canvas.create_text(225, 475+25, font=("Arial", 14), text="-")
+calc_away_ml = canvas.create_text(350, 475+25, font=("Arial", 14), text="-")
+calc_home_ml = canvas.create_text(475, 475+25, font=("Arial", 14), text="-")
+
+
 
 
 
