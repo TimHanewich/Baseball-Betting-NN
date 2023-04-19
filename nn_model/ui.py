@@ -132,10 +132,10 @@ def calculate_clicked():
     y = model.predict(x, verbose=False)[0]
 
     # write
-    canvas.itemconfig(calc_run_line, text=str(y[0]))
-    canvas.itemconfig(calc_total_line, text=str(y[1]))
-    canvas.itemconfig(calc_away_ml, text=str(y[2]))
-    canvas.itemconfig(calc_home_ml, text=str(y[3]))
+    canvas.itemconfig(calc_run_line, text=str(round(y[0], 1)))
+    canvas.itemconfig(calc_total_line, text=str(round(y[1], 1)))
+    canvas.itemconfig(calc_away_ml, text=str(round(y[2], 0)))
+    canvas.itemconfig(calc_home_ml, text=str(round(y[3], 0)))
     
 
 # calculate button
