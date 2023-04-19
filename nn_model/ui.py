@@ -1,10 +1,14 @@
 from tkinter import *
 
 
-# game state
+# button states
 man_on_first:bool = False
 man_on_second:bool = False
 man_on_third:bool = False
+ball_count = 0
+strike_count = 0
+out_count = 0
+
 
 
 
@@ -26,13 +30,13 @@ canvas.create_text(150, 280, text="Outs")
 
 # create balls
 balls_0 = canvas.create_rectangle(200, 188, 225, 188 + 25, fill="light blue")
-canvas.create_text(200 + 12.5, 188 + 12.5, text="0")
+balls_0_text = canvas.create_text(200 + 12.5, 188 + 12.5, text="0")
 balls_1 = canvas.create_rectangle(225, 188, 250, 188 + 25, fill="light blue")
-canvas.create_text(225 + 12.5, 188 + 12.5, text="1")
+balls_1_text = canvas.create_text(225 + 12.5, 188 + 12.5, text="1")
 balls_2 = canvas.create_rectangle(250, 188, 275, 188 + 25, fill="light blue")
-canvas.create_text(250 + 12.5, 188 + 12.5, text="2")
+balls_2_text = canvas.create_text(250 + 12.5, 188 + 12.5, text="2")
 balls_3 = canvas.create_rectangle(275, 188, 300, 188 + 25, fill="light blue")
-canvas.create_text(275 + 12.5, 188 + 12.5, text="3")
+balls_3_text = canvas.create_text(275 + 12.5, 188 + 12.5, text="3")
 
 # create strikes
 strikes_0 = canvas.create_rectangle(200, 226, 200 + 25, 226 + 25, fill="pink")
@@ -114,6 +118,9 @@ def on_click(event):
     global man_on_first
     global man_on_second
     global man_on_third
+    global ball_count
+    global strike_count
+    global out_count
 
     if widget_clicked_id == first_base:
         if man_on_first:
@@ -136,10 +143,61 @@ def on_click(event):
         else:
             canvas.itemconfig(widget_clicked_id, fill = "yellow")
             man_on_third = True
+    elif widget_clicked_id == balls_0 or widget_clicked_id == balls_0_text:
+        ball_count = 0
+        update_ui_balls()
+    elif widget_clicked_id == balls_1 or widget_clicked_id == balls_1_text:
+        ball_count = 1
+        update_ui_balls()
+    elif widget_clicked_id == balls_2 or widget_clicked_id == balls_2_text:
+        ball_count = 2
+        update_ui_balls()
+    elif widget_clicked_id == balls_3 or widget_clicked_id == balls_3_text:
+        ball_count = 3
+        update_ui_balls()
+    
+
+def update_ui_balls():
+    global balls_0
+    global balls_1
+    global balls_2
+    global balls_3
+    global ball_count
+    global canvas
+
+    if ball_count == 0:
+        canvas.itemconfig(balls_0, fill="yellow")
+        canvas.itemconfig(balls_1, fill="light blue")
+        canvas.itemconfig(balls_2, fill="light blue")
+        canvas.itemconfig(balls_3, fill="light blue")
+    elif ball_count == 1:
+        canvas.itemconfig(balls_0, fill="light blue")
+        canvas.itemconfig(balls_1, fill="yellow")
+        canvas.itemconfig(balls_2, fill="light blue")
+        canvas.itemconfig(balls_3, fill="light blue")
+    elif ball_count == 2:
+        canvas.itemconfig(balls_0, fill="light blue")
+        canvas.itemconfig(balls_1, fill="light blue")
+        canvas.itemconfig(balls_2, fill="yellow")
+        canvas.itemconfig(balls_3, fill="light blue")
+    elif ball_count == 3:
+        canvas.itemconfig(balls_0, fill="light blue")
+        canvas.itemconfig(balls_1, fill="light blue")
+        canvas.itemconfig(balls_2, fill="light blue")
+        canvas.itemconfig(balls_3, fill="yellow")
+        
 
 
 canvas.tag_bind(first_base, "<Button-1>", on_click)
 canvas.tag_bind(second_base, "<Button-1>", on_click)
 canvas.tag_bind(third_base, "<Button-1>", on_click)
+canvas.tag_bind(balls_0, "<Button-1>", on_click)
+canvas.tag_bind(balls_1, "<Button-1>", on_click)
+canvas.tag_bind(balls_2, "<Button-1>", on_click)
+canvas.tag_bind(balls_3, "<Button-1>", on_click)
+canvas.tag_bind(balls_0_text, "<Button-1>", on_click)
+canvas.tag_bind(balls_1_text, "<Button-1>", on_click)
+canvas.tag_bind(balls_2_text, "<Button-1>", on_click)
+canvas.tag_bind(balls_3_text, "<Button-1>", on_click)
 
 root.mainloop()
