@@ -1,4 +1,14 @@
 from tkinter import *
+import tensorflow as tf
+import numpy
+
+
+
+# load the neural network into memory
+print("Loading model... ")
+model:tf.keras.Model = tf.keras.models.load_model(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model2")
+print("Model loaded!")
+
 
 
 # button states
@@ -95,8 +105,41 @@ home_errors.place(x=350-12, y=390-8)
 home_record = Entry(root, width=5, font=("Arial", 12))
 home_record.place(x=425-22, y=390-8)
 
+
+def calculate_clicked():
+
+    # assemble the state array
+    state = []
+    state.append(float(away_record.get()))
+    state.append(float(home_record.get()))
+    state.append(float(away_runs.get()))
+    state.append(float(home_runs.get()))
+    state.append(float(away_hits.get()))
+    state.append(float(home_hits.get()))
+    state.append(float(away_errors.get()))
+    state.append(float(home_errors.get()))
+    state.append(float(current_inning.get()))
+    state.append(float(bottom_top_inning))
+    state.append(float(out_count))
+    state.append(float(ball_count))
+    state.append(float(strike_count))
+    state.append(float(man_on_first))
+    state.append(float(man_on_second))
+    state.append(float(man_on_third))
+
+    # predict
+    x = numpy.array([state])
+    y = model.predict(x, verbose=False)[0]
+
+    # write
+    canvas.itemconfig(calc_run_line, text=str(y[0]))
+    canvas.itemconfig(calc_total_line, text=str(y[1]))
+    canvas.itemconfig(calc_away_ml, text=str(y[2]))
+    canvas.itemconfig(calc_home_ml, text=str(y[3]))
+    
+
 # calculate button
-calculate_button = Button(root, text="Calculate", width=35, bg="light blue")
+calculate_button = Button(root, text="Calculate", width=35, bg="light blue", command=calculate_clicked)
 calculate_button.place(x=160, y=425)
 
 # calculations
@@ -181,8 +224,10 @@ def on_click(event):
     elif widget_clicked_id == inning_bottom or widget_clicked_id == inning_bottom_text:
         bottom_top_inning = True
         update_ui_bottom_top_inning()
-    
-    
+        
+
+
+
 
 def update_ui_balls():
     global balls_0
@@ -265,6 +310,10 @@ def update_ui_bottom_top_inning():
     elif bottom_top_inning == True:
         canvas.itemconfig(inning_top, fill = "light gray")
         canvas.itemconfig(inning_bottom, fill = "yellow")
+
+
+
+
 
 
 canvas.tag_bind(first_base, "<Button-1>", on_click)
