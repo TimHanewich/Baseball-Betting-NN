@@ -15,3 +15,6 @@ MLB Scoreboard on ESPN: https://www.espn.com/mlb/scoreboard
 ### Additional, for neural network:
 - Away Team Winning Percentage
 - Home Team Winning Percentage
+
+## Need to tweak
+- When a batter walks, ESPN will mark it with 4 balls in the count AND a man on second temporarily. If there are 4 balls and a man is on, count it as 0 balls.
