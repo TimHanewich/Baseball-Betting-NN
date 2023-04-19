@@ -48,11 +48,11 @@ strikes_2_text = canvas.create_text(250 + 12.5, 226 + 12.5, text="2")
 
 # create outs
 outs_0 = canvas.create_rectangle(200, 267, 200 + 25, 267 + 25, fill="orange")
-canvas.create_text(200 + 12.5, 267 + 12.5, text="0")
+outs_0_text = canvas.create_text(200 + 12.5, 267 + 12.5, text="0")
 outs_1 = canvas.create_rectangle(225, 267, 225 + 25, 267 + 25, fill="orange")
-canvas.create_text(225 + 12.5, 267 + 12.5, text="1")
+outs_1_text = canvas.create_text(225 + 12.5, 267 + 12.5, text="1")
 outs_2 = canvas.create_rectangle(250, 267, 250 + 25, 267 + 25, fill="orange")
-canvas.create_text(250 + 12.5, 267 + 12.5, text="2")
+outs_2_text = canvas.create_text(250 + 12.5, 267 + 12.5, text="2")
 
 # current inning
 canvas.create_text(350, 200, text="Inning")
@@ -164,6 +164,15 @@ def on_click(event):
     elif widget_clicked_id == strikes_2 or widget_clicked_id == strikes_2_text:
         strike_count = 2
         update_ui_strikes()
+    elif widget_clicked_id == outs_0 or widget_clicked_id == outs_0_text:
+        out_count = 0
+        update_ui_outs()
+    elif widget_clicked_id == outs_1 or widget_clicked_id == outs_1_text:
+        out_count = 1
+        update_ui_outs()
+    elif widget_clicked_id == outs_2 or widget_clicked_id == outs_2_text:
+        out_count = 2
+        update_ui_outs()
     
     
 
@@ -216,6 +225,25 @@ def update_ui_strikes():
         canvas.itemconfig(strikes_1, fill="pink")
         canvas.itemconfig(strikes_2, fill="yellow")
         
+def update_ui_outs():
+    global out_count
+    global outs_0
+    global outs_1
+    global outs_2
+    global canvas
+
+    if out_count == 0:
+        canvas.itemconfig(outs_0, fill="yellow")
+        canvas.itemconfig(outs_1, fill="orange")
+        canvas.itemconfig(outs_2, fill="orange")
+    elif out_count == 1:
+        canvas.itemconfig(outs_0, fill="orange")
+        canvas.itemconfig(outs_1, fill="yellow")
+        canvas.itemconfig(outs_2, fill="orange")
+    if out_count == 2:
+        canvas.itemconfig(outs_0, fill="orange")
+        canvas.itemconfig(outs_1, fill="orange")
+        canvas.itemconfig(outs_2, fill="yellow")
 
 
 canvas.tag_bind(first_base, "<Button-1>", on_click)
@@ -235,5 +263,11 @@ canvas.tag_bind(strikes_2, "<Button-1>", on_click)
 canvas.tag_bind(strikes_0_text, "<Button-1>", on_click)
 canvas.tag_bind(strikes_1_text, "<Button-1>", on_click)
 canvas.tag_bind(strikes_2_text, "<Button-1>", on_click)
+canvas.tag_bind(outs_0, "<Button-1>", on_click)
+canvas.tag_bind(outs_1, "<Button-1>", on_click)
+canvas.tag_bind(outs_2, "<Button-1>", on_click)
+canvas.tag_bind(outs_0_text, "<Button-1>", on_click)
+canvas.tag_bind(outs_1_text, "<Button-1>", on_click)
+canvas.tag_bind(outs_2_text, "<Button-1>", on_click)
 
 root.mainloop()
