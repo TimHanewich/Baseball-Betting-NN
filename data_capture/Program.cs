@@ -12,7 +12,7 @@ namespace ESPN
     public class Program
     {
         public static void Main(string[] args)
-        {           
+        { 
             RunAsync().Wait();
         }
 
