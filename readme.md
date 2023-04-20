@@ -4,7 +4,7 @@
 ## Model Downloads
 |Name|Parameters|Description|
 |-|-|-|
-|model4||Trained on ~5,300 examples|
+|model4|7,469|Trained on ~5,300 examples|
 |model5|378,274|Trained on 5,473 examples|
 
 MLB Scoreboard on ESPN: https://www.espn.com/mlb/scoreboard
