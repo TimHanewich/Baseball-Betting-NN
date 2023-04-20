@@ -6,10 +6,12 @@ import json
 
 
 inputs:tf.keras.layers.Dense = tf.keras.layers.Input(16)
-h1:tf.keras.layers.Dense = tf.keras.layers.Dense(80, "relu")
-h2:tf.keras.layers.Dense = tf.keras.layers.Dense(50, "relu")
-h3:tf.keras.layers.Dense = tf.keras.layers.Dense(30, "relu")
-h4:tf.keras.layers.Dense = tf.keras.layers.Dense(15, "relu")
+h1:tf.keras.layers.Dense = tf.keras.layers.Dense(350, "relu")
+h2:tf.keras.layers.Dense = tf.keras.layers.Dense(400, "relu")
+h3:tf.keras.layers.Dense = tf.keras.layers.Dense(300, "relu")
+h4:tf.keras.layers.Dense = tf.keras.layers.Dense(250, "relu")
+h5:tf.keras.layers.Dense = tf.keras.layers.Dense(120, "relu")
+h6:tf.keras.layers.Dense = tf.keras.layers.Dense(50, "relu")
 outputs:tf.keras.layers.Dense = tf.keras.layers.Dense(4)
 
 model = tf.keras.Sequential()
@@ -18,6 +20,8 @@ model.add(h1)
 model.add(h2)
 model.add(h3)
 model.add(h4)
+model.add(h5)
+model.add(h6)
 model.add(outputs)
 
 model.compile("adam", "mean_squared_error")
