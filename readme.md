@@ -1,3 +1,7 @@
+# Predicting MLB Betting Lines with Neural Networks
+
+
+
 MLB Scoreboard on ESPN: https://www.espn.com/mlb/scoreboard
 
 ## Baseball Game State
