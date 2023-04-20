@@ -52,6 +52,11 @@ These are `.jsonl` files. Each line is self-contained JSON object with both the 
 |-|
 |[5,473](https://timhmsft.blob.core.windows.net/downloadable/db9jfwejio1h2ohfdsf.jsonl?sp=r&st=2023-04-20T15:08:57Z&se=2999-04-20T23:08:57Z&spr=https&sv=2021-12-02&sr=b&sig=6Z9yJ5P077Q7kxbhafJZ4v3CtmsFAqSuBF%2FrOZCzhng%3D)|
 
+## In this Repo
+This repo contains the following programs:
+- [A program for capturing training data from ESPN and DraftKings, written in .NET 7](./data_capture/)
+- [A python script to assemble, compile, train, and save a tensorflow keras neural network](./nn_model/train.py)
+- [A python program to leverage a pre-trained model to allow you to predict for various scenarios, leveraging a pre-trained model](./nn_model/ui.py)
 
 ## Future Areas of Improvement
 - When a batter walks, ESPN will mark it with 4 balls in the count AND a man on second temporarily. If there are 4 balls and a man is on, count it as 0 balls.
