@@ -1,7 +1,17 @@
 # Predicting MLB Betting Lines with Neural Networks
 This project leverages Tensorflow's Keras API to compile, train, and use a neural network to predict betting lines in baseball game. Training data is gathered from ESPN (the *state*, or inputs) and DraftKings (the prediction, the outputs).
 
-Simply put - for any point in a theoretical game of baseball, this model should be able to predict what the standard betting lines for the game should be, and thus, predict a winner.
+Simply put - for any point in a theoretical game of baseball, this model predicts what the standard betting lines for the game should be, and thus, can predict a winner.
+
+![Baseball Betting Line Prediction Engine](https://i.imgur.com/okWJ3A9.png)
+
+
+## How to run the model
+1. Download and unzip one of the pre-trained models in the [download section below](#model-downloads).
+2. Replace the value of the `nn_model_path` variable in the [ui.py](./nn_model/ui.py) with the path of the folder *within* the unzipped folder.
+3. Install required dependencies:
+    1. **tensorflow**: `python -m pip install tensorflow`
+4. Run [ui.py](./nn_model/ui.py) to run the model and GUI!
 
 ## Model Inputs (the State)
 The model considers the following 16 inputs when predicting betting lines, in this order: 
