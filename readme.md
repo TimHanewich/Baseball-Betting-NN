@@ -1,7 +1,7 @@
 # Predicting MLB Betting Lines with Neural Networks
-This project leverages Tensorflow's Keras API to compile, train, and use a neural network to predict betting lines in baseball game. Training data is gathered from ESPN (the *state*, or inputs) and DraftKings (the prediction, the outputs).
+This project leverages Tensorflow's Keras API to compile, train, and use a neural network to predict betting lines in a baseball game. Training data is gathered from ESPN (the *state*, or inputs) and DraftKings (the prediction, the outputs).
 
-Simply put - for any point in a theoretical game of baseball, this model predicts what the standard betting lines for the game should be, and thus, can predict a winner.
+Simply put - for any point in a theoretical game of baseball, this model predicts what the standard betting lines for the game should be, and thus, can predict a winner at any point before or during a game.
 
 ![Baseball Betting Line Prediction Engine](https://i.imgur.com/okWJ3A9.png)
 
