@@ -34,6 +34,7 @@ bottom_top_inning = False # False = top of inning (away team batting), True = bo
 
 
 root = Tk()
+root.title("Baseball Betting Line Prediction Engine")
 canvas = Canvas(root, width=600, height=600)
 canvas.pack()
 
