@@ -1,5 +1,5 @@
 # Predicting MLB Betting Lines with Neural Networks
-This project leverages Tensorflow's Keras API to compile, train, and use a neural network to predict betting lines in a baseball game. Training data is gathered from ESPN (the *state*, or inputs) and DraftKings (the prediction, the outputs).
+This project leverages TensorFlow's Keras API to compile, train, and use a neural network to predict betting lines in a baseball game. Training data is gathered from ESPN (the *state*, or inputs) and DraftKings (the prediction, the outputs).
 
 Simply put - for any point in a theoretical game of baseball, this model predicts what the standard betting lines for the game should be, and thus, can predict a winner at any point before or during a game.
 
@@ -55,7 +55,7 @@ These are `.jsonl` files. Each line is self-contained JSON object with both the 
 ## In this Repo
 This repo contains the following programs:
 - [A program for capturing training data from ESPN and DraftKings, written in .NET 7](./data_capture/)
-- [A python script to assemble, compile, train, and save a tensorflow keras neural network](./nn_model/train.py)
+- [A python script to assemble, compile, train, and save a TensorFlow Keras neural network](./nn_model/train.py)
 - [A python program to leverage a pre-trained model to allow you to predict for various scenarios, leveraging a pre-trained model](./nn_model/ui.py)
 
 ## Future Areas of Improvement
