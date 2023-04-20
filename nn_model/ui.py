@@ -37,9 +37,9 @@ root = Tk()
 canvas = Canvas(root, width=600, height=600)
 canvas.pack()
 
-second_base = canvas.create_polygon(300, 0, 350, 50, 300, 100, 250, 50, fill='gray', outline='black')
-first_base = canvas.create_polygon(350, 50, 400, 100, 350, 150, 300, 100, fill='gray', outline='black')
-third_base = canvas.create_polygon(250, 50, 300, 100, 250, 150, 200, 100, fill='gray', outline='black')
+second_base = canvas.create_polygon(300, 20, 350, 70, 300, 120, 250, 70, fill='gray', outline='black')
+first_base = canvas.create_polygon(350, 70, 400, 120, 350, 170, 300, 120, fill='gray', outline='black')
+third_base = canvas.create_polygon(250, 70, 300, 120, 250, 170, 200, 120, fill='gray', outline='black')
 
 # create balls, strikes, outs text
 canvas.create_text(150, 200, text="Balls")
