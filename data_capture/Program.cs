@@ -22,60 +22,74 @@ namespace ESPN
 
             while (true)
             {
-                Console.Write("Retrieving scoreboard... ");
-                Scoreboard s = await Scoreboard.RetrieveAsync();
-                Console.WriteLine("Retrieved!");
+                bool failed = false;
 
-                //Retrieve DraftKings
-                Console.Write("Retrieving DraftKings lines... ");
-                BettingLine[] lines = await BettingLine.RetrieveAsync();
-                Console.WriteLine("Retrieved!");
-
-                //Collect new states
-                int new_states_added = 0;
-                foreach (Game g in s.Games)
+                try
                 {
-                    StatePredictionPair spp = new StatePredictionPair();
-                    spp.State = g.ToState();
+                    Console.Write("Retrieving scoreboard... ");
+                    Scoreboard s = await Scoreboard.RetrieveAsync();
+                    Console.WriteLine("Retrieved!");
 
-                    //Find the prediction in the draftkinds
-                    foreach (BettingLine line in lines)
+                    //Retrieve DraftKings
+                    Console.Write("Retrieving DraftKings lines... ");
+                    BettingLine[] lines = await BettingLine.RetrieveAsync();
+                    Console.WriteLine("Retrieved!");
+
+                    //Collect new states
+                    int new_states_added = 0;
+                    foreach (Game g in s.Games)
                     {
-                        if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
+                        StatePredictionPair spp = new StatePredictionPair();
+                        spp.State = g.ToState();
+
+                        //Find the prediction in the draftkinds
+                        foreach (BettingLine line in lines)
                         {
-                            spp.Prediction = line.ToState();
-                            bool added = db.AddIfNotStored(spp);
-                            if (added)
+                            if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
                             {
-                                new_states_added = new_states_added + 1;
+                                spp.Prediction = line.ToState();
+                                bool added = db.AddIfNotStored(spp);
+                                if (added)
+                                {
+                                    new_states_added = new_states_added + 1;
+                                }
                             }
                         }
                     }
-                }
 
-                //Print progress
-                if (new_states_added > 0)
-                {
-                    Console.WriteLine(new_states_added.ToString("#,##0") + " new frames added!");
-                }
-                
-
-                //Wait
-                TimeSpan ToWait = new TimeSpan(0, 5, 0); //Default, if no games are being played right now, is 5 minutes
-                
-                //But, if a single game is being played right now, wait only 5 seconds
-                foreach (Game g in s.Games)
-                {
-                    if (g.Inning != 0)
+                    //Print progress
+                    if (new_states_added > 0)
                     {
-                        ToWait = new TimeSpan(0, 0, 5);
+                        Console.WriteLine(new_states_added.ToString("#,##0") + " new frames added!");
                     }
-                }
+                    
 
-                //Wait
-                Console.Write("Waiting " + ToWait.TotalSeconds.ToString("#,##0") + " seconds before cycling... ");
-                await Task.Delay(ToWait);
-                Console.WriteLine("Moving on!");
+                    //Wait
+                    TimeSpan ToWait = new TimeSpan(0, 5, 0); //Default, if no games are being played right now, is 5 minutes
+                    
+                    //But, if a single game is being played right now, wait only 5 seconds
+                    foreach (Game g in s.Games)
+                    {
+                        if (g.Inning != 0)
+                        {
+                            ToWait = new TimeSpan(0, 0, 5);
+                        }
+                    }
+
+                    //Wait
+                    Console.Write("Waiting " + ToWait.TotalSeconds.ToString("#,##0") + " seconds before cycling... ");
+                    await Task.Delay(ToWait);
+                    Console.WriteLine("Moving on!");
+                }
+                catch
+                {
+                    failed = true;
+                }
+                
+                if (failed)
+                {
+                    await Task.Delay(15000);
+                }
             }
             
             
