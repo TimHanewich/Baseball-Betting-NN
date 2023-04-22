@@ -49,6 +49,10 @@ namespace DraftKings
             int loc1 = content.IndexOf("window.__INITIAL_STATE__");
             loc1 = content.IndexOf("=", loc1 +1);
             int loc2 = content.IndexOf("window.__serverDate", loc1 + 1);
+            if (loc1 == -1)
+            {
+                throw new Exception("Unable to find JSON begin and end! (window.__serverDate)!")
+            }
             loc2 = content.LastIndexOf(";", loc2);
             string json_text = content.Substring(loc1 + 1, loc2 - loc1 - 1).Trim();
             JObject root = JObject.Parse(json_text);
