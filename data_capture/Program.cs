@@ -48,11 +48,8 @@ namespace ESPN
                             if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
                             {
                                 spp.Prediction = line.ToState();
-                                bool added = db.AddIfNotStored(spp);
-                                if (added)
-                                {
-                                    new_states_added = new_states_added + 1;
-                                }
+                                db.AddIfNotStored(spp);
+                                new_states_added = new_states_added + 1;
                             }
                         }
                     }

@@ -18,7 +18,7 @@ namespace ESPN
         }
 
         //Sees if we already have this EXACT state and it's implied probability on file
-        public bool Stored(float[] state)
+        public bool Stored(StatePredictionPair spp)
         {
             StreamReader sr = new StreamReader(path);
             
@@ -32,10 +32,10 @@ namespace ESPN
                 }
                 else
                 {
-                    StatePredictionPair? spp = JsonConvert.DeserializeObject<StatePredictionPair>(line);
-                    if (spp != null)
+                    StatePredictionPair? spp_ = JsonConvert.DeserializeObject<StatePredictionPair>(line);
+                    if (spp_ != null)
                     {
-                        if (Game.EquivalentStates(spp.State, state))
+                        if (JsonConvert.SerializeObject(spp_) == JsonConvert.SerializeObject(spp)) //If it is not EXACTLY the same
                         {
                             sr.Close();
                             return true;
@@ -60,7 +60,7 @@ namespace ESPN
         //Returns true if added, false if not
         public bool AddIfNotStored(StatePredictionPair spp)
         {
-            bool exists = Stored(spp.State);
+            bool exists = Stored(spp);
             if (exists == false)
             {
                 Add(spp);
