@@ -35,7 +35,7 @@ namespace ESPN
                     StatePredictionPair? spp_ = JsonConvert.DeserializeObject<StatePredictionPair>(line);
                     if (spp_ != null)
                     {
-                        if (FloatArraysSame(spp.State, spp_.Prediction) && FloatArraysSame(spp.Prediction, spp_.Prediction)) //If it is not EXACTLY the same
+                        if (FloatArraysSame(spp.State, spp_.State) && FloatArraysSame(spp.Prediction, spp_.Prediction)) //If it is not EXACTLY the same
                         {
                             sr.Close();
                             return true;
