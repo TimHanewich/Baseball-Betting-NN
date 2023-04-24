@@ -13,7 +13,18 @@ namespace ESPN
     {
         public static void Main(string[] args)
         { 
-            RunAsync().Wait();
+            // Scoreboard s = Scoreboard.RetrieveAsync(DateTime.Now).Result;
+            // foreach (Game g in s.Games)
+            // {
+            //     Console.WriteLine(g.AwayTeamAbbreviation + " @ " + g.HomeTeamAbbreviation + " (inning " + g.Inning.ToString() + ")");
+            // }
+
+            BettingLine[] lines = BettingLine.RetrieveAsync().Result;
+            foreach (BettingLine line in lines)
+            {
+                Console.WriteLine(line.AwayTeamAbbreviation + " @ " + line.HomeTeamAbbreviation + " @ " + line.StartDateUtc.ToString());
+            }
+
         }
 
         public static async Task RunAsync()
@@ -49,7 +60,37 @@ namespace ESPN
                             if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
                             {
                                 matching_line = line;
-                                
+                            }
+                        }
+
+                        //If one is started and one is not started, this is not a match! different games
+                        if (matching_line != null)
+                        {
+                            bool espn_live = false;
+                            bool draftkings_line = false;
+
+                            if (g.Inning == 0)
+                            {
+                                espn_live = false;
+                            }
+                            else
+                            {
+                                espn_live = true;
+                            }
+
+                            if (matching_line.Status == EventStatus.Started)
+                            {
+                                draftkings_line = true;
+                            }
+                            else
+                            {
+                                draftkings_line = false;
+                            }
+
+                            //If they are not on  the same page, cancel
+                            if (espn_live != draftkings_line)
+                            {
+                                matching_line = null;
                             }
                         }
 

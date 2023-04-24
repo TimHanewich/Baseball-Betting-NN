@@ -16,6 +16,8 @@ namespace DraftKings
         public string AwayTeamAbbreviation {get; set;}
         public string HomeTeam {get; set;}
         public string HomeTeamAbbreviation {get; set;}
+        public EventStatus Status {get; set;}
+        public DateTime StartDateUtc {get; set;}
 
         //Used in the model
         public float RunLine {get; set;} //i.e. 1.5 or -1.5 where you would choose either
@@ -104,6 +106,27 @@ namespace DraftKings
                     if (prop_teamShortName2 != null)
                     {
                         ThisBettingLine.HomeTeamAbbreviation = prop_teamShortName2.Value.ToString();
+                    }
+
+                    //Event status
+                    JToken? state = e.SelectToken("eventStatus.state");
+                    if (state != null)
+                    {
+                        if (state.ToString().ToLower() == "started")
+                        {
+                            ThisBettingLine.Status = EventStatus.Started;
+                        }
+                        else if (state.ToString().ToLower() == "not_started")
+                        {
+                            ThisBettingLine.Status = EventStatus.NotStarted;
+                        }
+                    }
+
+                    //Start date
+                    JToken? startDate = e.SelectToken("startDate");
+                    if (startDate != null)
+                    {
+                        ThisBettingLine.StartDateUtc = DateTime.Parse(startDate.ToString());
                     }
 
                     //Add
