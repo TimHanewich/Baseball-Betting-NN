@@ -338,6 +338,13 @@ namespace ESPN
                                 }
                             }
 
+                            //start date UTC
+                            JToken? date = jo.SelectToken("intlDate");
+                            if (date != null)
+                            {
+                                g.StartDateUtc = DateTime.Parse(date.ToString());
+                            }
+
 
                         }
                     }

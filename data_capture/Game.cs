@@ -16,6 +16,7 @@ namespace ESPN
         public float? WinProbability {get; set;} //1.0 would be a 100% probability for the away team. -1.0 is a 100% probability for the home team. If this is null, it means it was not available in  the initial read from the Scoreboard (one page) and a call to the game page is required.
         public string AwayTeamAbbreviation {get; set;}
         public string HomeTeamAbbreviation {get; set;}
+        public DateTime StartDateUtc {get; set;}
 
 
         public float AwayTeamWinningRecord {get; set;}
