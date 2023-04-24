@@ -18,7 +18,7 @@ namespace ESPN
 
         public static async Task RunAsync()
         {
-            VirtualDB db = new VirtualDB(@"C:\Users\timh\Downloads\tah\nn\db.jsonl");
+            VirtualDB db = new VirtualDB(@"C:\Users\timh\Downloads\tah\nn\db2.jsonl");
 
             while (true)
             {
