@@ -29,7 +29,7 @@ model.compile("adam", "mean_squared_error")
 print("Preparing training data...")
 x_train = []
 y_train = []
-f = open(r"C:\Users\timh\Downloads\tah\nn\db2.jsonl")
+f = open(r"C:\Users\timh\Downloads\a784eb7c9f07.jsonl")
 while True:
     line = f.readline()
     if not line:
@@ -54,8 +54,8 @@ print("Y examples: " + str(len(y_train)))
 i = numpy.array(x_train)
 o = numpy.array(y_train)
 print("Training... ")
-model.fit(i, o, epochs=350, verbose=True)
+model.fit(i, o, epochs=100, verbose=True)
 print("complete!")
 
 # save
-model.save(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model5")
+model.save(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model6")
