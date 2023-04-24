@@ -28,12 +28,12 @@ namespace ESPN
                 {
                     Console.Write("Retrieving scoreboard... ");
                     Scoreboard s = await Scoreboard.RetrieveAsync();
-                    Console.WriteLine("Retrieved!");
+                    Console.WriteLine("Retrieved with " + s.Games.Length.ToString("#,##0") + " games!");
 
                     //Retrieve DraftKings
                     Console.Write("Retrieving DraftKings lines... ");
                     BettingLine[] lines = await BettingLine.RetrieveAsync();
-                    Console.WriteLine("Retrieved!");
+                    Console.WriteLine("Retrieved with " + lines.Length.ToString("#,##0") + " lines!");
 
                     //Collect new states
                     int new_states_added = 0;
@@ -42,18 +42,30 @@ namespace ESPN
                         StatePredictionPair spp = new StatePredictionPair();
                         spp.State = g.ToState();
 
-                        //Find the prediction in the draftkinds
+                        //Find the prediction in the draftkings
+                        BettingLine? matching_line = null;
                         foreach (BettingLine line in lines)
                         {
                             if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
                             {
-                                spp.Prediction = line.ToState();
-                                bool added = db.AddIfNotStored(spp);
-                                if (added)
-                                {
-                                    new_states_added = new_states_added + 1;
-                                }
+                                matching_line = line;
+                                
                             }
+                        }
+
+                        //If we have a matching line, see if we should add it
+                        if (matching_line != null)
+                        {
+                            spp.Prediction = matching_line.ToState();
+                            bool added = db.AddIfNotStored(spp);
+                            if (added)
+                            {
+                                new_states_added = new_states_added + 1;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unable to find matching betting line for game " + g.AwayTeamAbbreviation + " @ " + g.HomeTeamAbbreviation);
                         }
                     }
 
