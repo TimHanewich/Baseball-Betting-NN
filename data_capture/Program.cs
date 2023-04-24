@@ -12,19 +12,8 @@ namespace ESPN
     public class Program
     {
         public static void Main(string[] args)
-        { 
-            // Scoreboard s = Scoreboard.RetrieveAsync(DateTime.Now).Result;
-            // foreach (Game g in s.Games)
-            // {
-            //     Console.WriteLine(g.AwayTeamAbbreviation + " @ " + g.HomeTeamAbbreviation + " (inning " + g.Inning.ToString() + ")");
-            // }
-
-            BettingLine[] lines = BettingLine.RetrieveAsync().Result;
-            foreach (BettingLine line in lines)
-            {
-                Console.WriteLine(line.AwayTeamAbbreviation + " @ " + line.HomeTeamAbbreviation + " @ " + line.StartDateUtc.ToString());
-            }
-
+        {
+            RunAsync().Wait();
         }
 
         public static async Task RunAsync()
@@ -46,9 +35,28 @@ namespace ESPN
                     BettingLine[] lines = await BettingLine.RetrieveAsync();
                     Console.WriteLine("Retrieved with " + lines.Length.ToString("#,##0") + " lines!");
 
+                    //Select a subset of the ESPN games that either have not started yet or are currently live (EXCLUDE past games)
+                    List<Game> LiveOrUpcomingGames = new List<Game>();
+                    foreach (Game g in s.Games)
+                    {
+                        if (g.Inning > 0)
+                        {
+                            LiveOrUpcomingGames.Add(g);
+                        }
+                        else
+                        {
+                            TimeSpan ts = g.StartDateUtc - DateTime.UtcNow;
+                            if (ts.TotalSeconds > 0)
+                            {
+                                LiveOrUpcomingGames.Add(g);
+                            }
+                        }
+                    }
+
                     //Collect new states
                     int new_states_added = 0;
-                    foreach (Game g in s.Games)
+                    int matches_found = 0;
+                    foreach (Game g in LiveOrUpcomingGames)
                     {
                         StatePredictionPair spp = new StatePredictionPair();
                         spp.State = g.ToState();
@@ -57,46 +65,40 @@ namespace ESPN
                         BettingLine? matching_line = null;
                         foreach (BettingLine line in lines)
                         {
-                            if (line.AwayTeamAbbreviation == g.AwayTeamAbbreviation && line.HomeTeamAbbreviation == g.HomeTeamAbbreviation)
-                            {
-                                matching_line = line;
-                            }
-                        }
 
-                        //If one is started and one is not started, this is not a match! different games
-                        if (matching_line != null)
-                        {
-                            bool espn_live = false;
-                            bool draftkings_line = false;
-
-                            if (g.Inning == 0)
+                            //Is this a potential team match?
+                            bool team_match = false;
+                            if (g.AwayTeamAbbreviation.ToLower().Contains(line.AwayTeamAbbreviation.ToLower()))
                             {
-                                espn_live = false;
+                                team_match = true;
                             }
-                            else
+                            else if (g.HomeTeamAbbreviation.ToLower().Contains(line.HomeTeamAbbreviation.ToLower()))
                             {
-                                espn_live = true;
+                                team_match = true;
                             }
-
-                            if (matching_line.Status == EventStatus.Started)
+                            else if (line.AwayTeamAbbreviation.ToLower().Contains(g.AwayTeamAbbreviation.ToLower()))
                             {
-                                draftkings_line = true;
+                                team_match = true;
                             }
-                            else
+                            else if (line.HomeTeamAbbreviation.ToLower().Contains(g.HomeTeamAbbreviation.ToLower()))
                             {
-                                draftkings_line = false;
+                                team_match = true;
                             }
 
-                            //If they are not on  the same page, cancel
-                            if (espn_live != draftkings_line)
+                            if (team_match)
                             {
-                                matching_line = null;
-                            }
+                                TimeSpan ts = g.StartDateUtc - line.StartDateUtc;
+                                if (Math.Abs(ts.TotalMinutes) < 20)
+                                {
+                                    matching_line = line;
+                                }
+                            } 
                         }
 
                         //If we have a matching line, see if we should add it
                         if (matching_line != null)
                         {
+                            matches_found = matches_found + 1;
                             spp.Prediction = matching_line.ToState();
                             bool added = db.AddIfNotStored(spp);
                             if (added)
@@ -104,11 +106,10 @@ namespace ESPN
                                 new_states_added = new_states_added + 1;
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("Unable to find matching betting line for game " + g.AwayTeamAbbreviation + " @ " + g.HomeTeamAbbreviation);
-                        }
                     }
+
+                    //Print matching rate
+                    Console.WriteLine(matches_found.ToString() + " / " + LiveOrUpcomingGames.Count.ToString() + " live or upcoming games matched.");
 
                     //Print progress
                     if (new_states_added > 0)
