@@ -1,5 +1,5 @@
 ##### SETTINGS #####
-nn_model_path = r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model6"
+nn_model_path = r"C:\Users\timh\Downloads\tah\nn\models\model7"
 ####################
 
 
