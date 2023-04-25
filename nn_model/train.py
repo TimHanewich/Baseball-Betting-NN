@@ -29,7 +29,7 @@ model.compile("adam", "mean_squared_error")
 print("Preparing training data...")
 x_train = []
 y_train = []
-f = open(r"C:\Users\timh\Downloads\a784eb7c9f07.jsonl")
+f = open(r"C:\Users\timh\Downloads\tah\nn\db2.jsonl")
 while True:
     line = f.readline()
     if not line:
