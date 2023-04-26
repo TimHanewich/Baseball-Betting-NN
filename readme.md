@@ -45,6 +45,7 @@ Using the odds above, particularly the money lines, we can use these to calculat
 |-|-|-|
 |[model4](https://timhmsft.blob.core.windows.net/downloadable/model4.zip?sp=r&st=2023-04-20T15:19:20Z&se=2999-04-20T23:19:20Z&spr=https&sv=2021-12-02&sr=b&sig=AVQ9fkDrzJCz3p7XPqYQ%2Fr6lSL5o6btCZc2Mj22KnGM%3D)|7,469|Trained on ~5,300 examples. **Warning**, trained on data that likely contained errors.|
 |[model5](https://timhmsft.blob.core.windows.net/downloadable/model5.zip?sp=r&st=2023-04-20T15:19:53Z&se=2999-04-20T23:19:53Z&spr=https&sv=2021-12-02&sr=b&sig=3X277mvDT0%2Fp3mA1jC476jeH6QNH8sX7HcCnnLLRmwE%3D)|378,274|Trained on 5,473 examples. **Warning**, trained on data that likely contained errors.|
+|[model8](https://timhmsft.blob.core.windows.net/downloadable/model8-63e08460493e4273b.zip?sp=r&st=2023-04-26T14:02:12Z&se=2999-04-26T22:02:12Z&sv=2021-12-02&sr=b&sig=joJHly6gHZGklmat2awm6O%2BXsRJaL%2FpNLKCRteJwYI4%3D)|378,274|Trained on 14,594 examples|
 
 ## Training Data Downloads
 These are `.jsonl` files. Each line is self-contained JSON object with both the state (game scenario) and real-world observed betting line information.
