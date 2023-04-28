@@ -58,4 +58,4 @@ model.fit(i, o, epochs=150, verbose=True)
 print("complete!")
 
 # save
-model.save(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model8")
+model.save(r"C:\Users\timh\Downloads\tah\nn\nn_model\models\model9")
