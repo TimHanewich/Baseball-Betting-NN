@@ -54,7 +54,7 @@ print("Y examples: " + str(len(y_train)))
 i = numpy.array(x_train)
 o = numpy.array(y_train)
 print("Training... ")
-model.fit(i, o, epochs=250, verbose=True)
+model.fit(i, o, epochs=150, verbose=True)
 print("complete!")
 
 # save
